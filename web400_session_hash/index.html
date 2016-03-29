@@ -36,15 +36,37 @@
 <img src="task.jpg"><br/>
 <h3 id="en">English Version</h3>
 <p>If we see in this task, the progression of the queue must be equal to the position of the queue.</p>
-<p>And in this example, the progression of the queue .</p>
+<p>And in this example, the progress value is too far from the value of the position.</p>
+<p>The progression advance every minute.</p>
+<p>In the code given in the index.phps page, there is not the code of the progression function.</p>
+<p>So we can not act on the value of the progress.</p>
+<p>By cons, if one understands the code, we find that every new visitor will have a new PHPSESSID cookie that will be saved in the database. The auto-incremented ID of this entry will be stored in the cookie "visite". After that, the code will create a hash sha1 from the ID saved in "visite".</p>
+<p>Now if the visitor is old, the code will create the sha1 hash from the visit ID if it has been changed manually. Then it will check in the database if there is a line associated with both the ID and the value of PHPSESSID cookie to prevent stealing of ancient ID visitors. That way we can ensure that there is one visitor who has this ID.</p>
+<p>If we found that this visitor has a valid visitor ID (PHPSESSID exists in the database), then nothing happens. Otherwise, the visitor changed the ID visit in the cookie manually, then the code will verify if he stole an old ID. If he did,the code will reset his visit ID in the cookie with a new value. Else, this is not a problem as he set a great value of the visit ID because the vistor will delay his turn. In this case, the code will save the PHPSESSID cookie in the database with an auto-incremented ID.</p>
+<p>Note that there is a fault in this part is that even if the user puts a great visit ID than the current value of the auto-increment in the database, the ID of the record associated to this PHPSESSID that will be set in the database will be the auto-increment ID and not the ID entered in the cookie "visite".</p>
+<p>Example: If the visitor has changed the cookie visit as follows: "$_COOKIE ["visit"]=10000000000;" and the maximum value of the queue is 30000, the new line added to the database will have an ID = 30001, not 10000000000. So if we found a great visit ID that allows us to bypass the queue, there will be no problem that several participants CTF can take it.</p>
+<p>After all these checks, we note that for a new visitor or an older visitor, both will have an ID visit in this page. And in the end, the code will checks if the hash sha1 of the session ID is zero.</p>
+<p>If you notice, when the code has found an old visitor, and when he checked into the database if the PHPSESSID exists, and when it is assured that it is a valid user, he checked in that moment if the turn of this visitor came (visit ID equal to the value of the progression).</p>
+<p>In this case, the code will set the value of zero to the hash because the creator of this website do not like to manipulate numeric values (visit ID).</p>
+<p>By cons according to him, a hash can not be equivalent to zero.</p>
+<p>This let us a trick to think if we can find a non-empty sha1 hash (40 characters) that will be equivalent to zero.</p>
+<p>When looking at this article written by WhiteHatSec: <a href="https://www.whitehatsec.com/blog/magic-hashes/">https://www.whitehatsec.com/blog/magic-hashes/</a>.</p>
+<p>We find that there are figures that give a hash equivalent to zero. These hash have a special characteristic: it start with "0e".</p>
+<p>And since the number "10932435112" is very high, and it gives a hash "0e07766915004133176347055865026311692244", then we can ensure that $_SESSION["visit"] == "0" is true.</p>
+<p>Let's practice, we will inject the value "10932435112" in the cookie "visite" in  Firefox visit with the extension "Cookies Manager +" and we'll refresh the page.</p>
+<img src="cookie.jpg">
+This is a preview:
+<img src="solution.jpg"><br/>
+The flag is: Wh1t3HaT53c_Ma61c_Ha5H35</p>
+<br/>
 <h3 id="fr">Version Française</h3>
 <p>Comme on voit dans cette épreuve, la progression de la file d'attente doit être égale à la position de la file.</p>
 <p>Et dans cet exemple, la valeur de la progression est trop loin de la valeur de la position.</p>
 <p>La progression avance chaque minute.</p>
-<p>Dans le code donné dans la page index.phps, il n'y a pas le code de progression.</p>
+<p>Dans le code donné dans la page <a href="index.phps">index.phps</a>, il n'y a pas le code de progression.</p>
 <p>Donc on ne peut pas agir sur la valeur de la progression.</p>
 <p>Par contre si on comprend bien le code, on trouve que chaque nouvel visiteur aura une nouvelle cookie PHPSESSID qui sera enregistrée dans la base de donnée. L'ID auto-incrémenté de cette saisie, sera enregistré dans la cookie "visite". Après, le code va créer un hash en sha1 à partir de l'ID sauvegardé dans "visite".</p>
-<p>Maintenant si le visiteur est ancien, le code va créer le hash shah1 de l'ID visite s'il a été changé manuellement. Puis il va vérifier dans la base de données s'il existe une ligne associée à la fois à cet ID et à la valeur du cookie PHPSESSID pour éviter le vol des ID des anciens visiteurs. Comme ça on pourra s'assurer qu'il y a un seul visiteur qui a cet ID.</p>
+<p>Maintenant si le visiteur est ancien, le code va créer le hash sha1 de l'ID visite s'il a été changé manuellement. Puis il va vérifier dans la base de données s'il existe une ligne associée à la fois à cet ID et à la valeur du cookie PHPSESSID pour éviter le vol des ID des anciens visiteurs. Comme ça on pourra s'assurer qu'il y a un seul visiteur qui a cet ID.</p>
 <p>Si on a trouvé que ce visiteur a un ID visite valide (PHPSESSID existe dans la base de données), alors rien ne se passe. Sinon, le visiteur a changé l'ID visite du cookie manuellement, donc on vérifie s'il a essayé de voler un ancien ID. S'il l'a volé, réinitialise son cookie visite avec une nouvelle valeur. Sinon ça ne dérange pas le code tant qu'il a mi une valeur de l'ID visite très grande donc il va retarder son tour. Dans ce cas, on sauvegarde son PHPSESSID dans la base de données encore avec un ID auto-incrémenté.</p>
 <p>On remarque qu'il y a une faute dans cette dernière partie, c'est que même si l'utilisateur met un ID visite très grand par rapport à la valeur actuelle de l’auto-incrément dans la base de données, l'ID qui sera enregistré sera celui de l’auto-incrément et non pas de l'ID saisi dans la cookie visite. Exemple: Si le visiteur a changé la cookie visite comme suit: "$_COOKIE["visite"]=10000000000;" et la valeur maximale de la file d'attente est 30000, la nouvelle ligne ajoutée dans la base de données aura pour ID=30001 et non pas 10000000000. Donc s'il y a un ID visite très grand qui nous permet de bypasser la file d'attente, il n'y aura aucun problème que plusieurs participants du CTF puissent le prendre.</p>
 <p>Revenons au code. Après toutes ces vérifications, on remarque que pour un nouveau visiteur ou un ancien visiteur, tous les deux auront un ID visite dans cette page. Et à la fin, on vérifie si le hash sha1 de l'ID session est égal à zéro. Si vous remarquez, lorsque le code a trouvé un ancien visiteur, et lorsqu'il a vérifié dans la base de donnée si son PHPSESSID existe, et quand il s'est assuré qu'il est bien un utilisateur valide, il a trouvé l'opportunité de vérifier si son tour est arrivé ou non (ID visite égal à la valeur de la progression).</p>
@@ -59,7 +81,6 @@
 On aura cet aperçu:
 <img src="solution.jpg"><br/>
 Le flag est: Wh1t3HaT53c_Ma61c_Ha5H35</p>
-<p></p>
       </section>
     </div>
     <footer>
