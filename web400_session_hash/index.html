@@ -29,19 +29,26 @@
       <section>
         <h3>
 <a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Session Hash (Web 400 points)</h3>
+<h3><a href="#en">English Version</a></h3>
+<h3><a href="#fr">Version Française</a></h3>
 <img src="question.jpg">
+<img src="task.jpg">
+<h3 id="en">English Version</h3>
+<p>If we see in this task, the progression of the queue must be equal to the position of the queue.</p>
+<p>And in this example, the progression of the queue .</p>
+<h3 id="fr">Version Française</h3>
+<p>Comme on voit dans cette épreuve, la progression de la file d'attente doit être égale à la position de la file</p>
+<p>Et dans cet exemple, sque le code a trouvé un ancien visiteur, et lorsqu'il a vérifié dans la base de donnée si son PHPSESSID existe, et quand il s'est assuré qu'il est bien un utilisateur valide, il a trouvé l'opportunité de vérifier si son tour est arrivé ou non (ID visite égal à la valeur de la progression). Dans ce cas on met la valeur du hash à zéro puisque le créateur de ce site n'aime pas manipuler les entiers (ID visite). Par contre d'après lui, un hash ne peut pas être équivalent à zéro.
+C'est là que vient l'astuce de réfléchir s'il existe réellement un hash sha1 non vide (à 40 caractères) et qui est équivalent à zéro.
+Lorsqu'on regarde cet article écrit par WhiteHatSec: <a href="https://www.whitehatsec.com/blog/magic-hashes/">https://www.whitehatsec.com/blog/magic-hashes/</a>
+On trouve qu'il y a des chiffres qui donnent un hash équivalent à zéro. Ces hash ont une caractéristique spéciale: ils commencent avec "0e".
+Et puisque le chiffre "10932435112" est très grand donne un hash "0e07766915004133176347055865026311692244", alors on pourra s'assurer que $_SESSION["visite"]=="0" est vrai.
+Passons en pratique, on va injecter l'ID 10932435112 dans la cookie visite sous Firefox avec "Cookies Manager +" et on va rafraichir la page.
+<img src="cookie.jpg">
+On aura cet aperçu:
+<img src="solution.jpg">
+Le flag est: Wh1t3HaT53c_Ma61c_Ha5H35</p>
 <p></p>
-<p><a href="mathematics">Mathematics (400 points)</a></p>
-<p><a href="js_emperor">JS Emperor (666 points)</a></p>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PWN</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Stegano</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Forensics</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reverse</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Crypto</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hidden</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Misc</h3>
-<a class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logic</h3>
-
       </section>
     </div>
     <footer>
